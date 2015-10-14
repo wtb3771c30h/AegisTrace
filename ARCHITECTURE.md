@@ -1,2 +1,5 @@
 # Architecture
 
+## Execution pipeline
+
+```text
