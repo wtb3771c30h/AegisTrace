@@ -56,3 +56,32 @@ func main() {
 		usage()
 		err = fmt.Errorf("unknown command %q", os.Args[1])
 	}
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "error:", err)
+		os.Exit(1)
+	}
+}
+
+func compileCommand(args []string) error {
+	fs := flag.NewFlagSet("compile", flag.ContinueOnError)
+	output := fs.String("o", "", "output artifact")
+	if err := fs.Parse(interspersed(args)); err != nil {
+		return err
+	}
+	if fs.NArg() != 1 {
+		return fmt.Errorf("usage: aegis compile workflow.yaml [-o workflow.aegis]")
+	}
+	source, err := os.ReadFile(fs.Arg(0))
+	if err != nil {
+		return err
+	}
+	artifact, report, err := compiler.Compile(source, time.Now())
+	if err != nil {
+		return err
+	}
+	if *output == "" {
+		*output = fs.Arg(0) + ".aegis"
+	}
+	if err := compiler.Save(*output, artifact); err != nil {
+		return err
+	}
