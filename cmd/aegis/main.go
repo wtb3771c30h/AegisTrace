@@ -85,3 +85,32 @@ func compileCommand(args []string) error {
 	if err := compiler.Save(*output, artifact); err != nil {
 		return err
 	}
+	fmt.Printf("compiled %s\nverified %d steps, %d edges\ndigest   %s\n", *output, report.Steps, report.Edges, artifact.Digest)
+	return nil
+}
+
+func verifyCommand(args []string) error {
+	if len(args) != 1 {
+		return fmt.Errorf("usage: aegis verify workflow.aegis")
+	}
+	artifact, err := compiler.Load(args[0])
+	if err != nil {
+		return err
+	}
+	report := verifier.Verify(artifact.Workflow)
+	if err := report.Error(); err != nil {
+		return err
+	}
+	fmt.Printf("verified %s: %d steps, %d edges, %s\n", artifact.Workflow.Name, report.Steps, report.Edges, artifact.Digest)
+	return nil
+}
+
+func runCommand(args []string) error {
+	fs := flag.NewFlagSet("run", flag.ContinueOnError)
+	journalPath := fs.String("journal", "run.atlog", "journal path")
+	inputJSON := fs.String("input", "{}", "JSON input")
+	approve := fs.Bool("approve", false, "approve guarded steps")
+	if err := fs.Parse(interspersed(args)); err != nil {
+		return err
+	}
+	if fs.NArg() != 1 {
