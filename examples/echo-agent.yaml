@@ -2,3 +2,5 @@ name: issue-triage
 version: "1"
 description: Deterministic local example using the echo provider
 entry: classify
+budget:
+  max_steps: 8
