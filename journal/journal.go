@@ -32,3 +32,20 @@ type Writer struct {
 }
 
 func Create(path, runID string) (*Writer, error) {
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o600)
+	if err != nil {
+		return nil, fmt.Errorf("create journal: %w", err)
+	}
+	return &Writer{file: f, runID: runID}, nil
+}
+
+func (w *Writer) Append(kind, stepID string, data map[string]any) (Event, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	e := Event{Sequence: w.next, Time: time.Now().UTC(), RunID: w.runID, StepID: stepID, Type: kind, Data: data, Previous: w.previous}
+	hash, err := hashEvent(e)
+	if err != nil {
+		return e, err
+	}
+	e.Hash = hash
+	encoded, err := json.Marshal(e)
