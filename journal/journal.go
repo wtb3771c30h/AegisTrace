@@ -15,3 +15,20 @@ import (
 type Event struct {
 	Sequence uint64         `json:"sequence"`
 	Time     time.Time      `json:"time"`
+	RunID    string         `json:"run_id"`
+	StepID   string         `json:"step_id,omitempty"`
+	Type     string         `json:"type"`
+	Data     map[string]any `json:"data,omitempty"`
+	Previous string         `json:"previous,omitempty"`
+	Hash     string         `json:"hash"`
+}
+
+type Writer struct {
+	mu       sync.Mutex
+	file     *os.File
+	runID    string
+	next     uint64
+	previous string
+}
+
+func Create(path, runID string) (*Writer, error) {
