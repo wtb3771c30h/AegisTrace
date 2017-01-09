@@ -49,3 +49,21 @@ func (w *Writer) Append(kind, stepID string, data map[string]any) (Event, error)
 	}
 	e.Hash = hash
 	encoded, err := json.Marshal(e)
+	if err != nil {
+		return e, fmt.Errorf("encode event: %w", err)
+	}
+	if _, err = w.file.Write(append(encoded, '\n')); err != nil {
+		return e, fmt.Errorf("append journal: %w", err)
+	}
+	if err = w.file.Sync(); err != nil {
+		return e, fmt.Errorf("sync journal: %w", err)
+	}
+	w.next++
+	w.previous = hash
+	return e, nil
+}
+
+func (w *Writer) Close() error {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.file == nil {
