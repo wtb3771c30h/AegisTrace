@@ -4,3 +4,6 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/aegistrace/aegistrace/journal"
+)
