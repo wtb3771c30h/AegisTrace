@@ -7,3 +7,6 @@ import (
 
 	"github.com/aegistrace/aegistrace/journal"
 )
+
+func TestJournalRoundTripAndTamperDetection(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "run.atlog")
