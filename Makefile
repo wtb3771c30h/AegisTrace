@@ -4,3 +4,6 @@ BINARY ?= aegis
 
 all: check build
 
+build:
+	go build -trimpath -o $(BINARY) ./cmd/aegis
+
