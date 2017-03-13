@@ -12,3 +12,10 @@ import (
 	"time"
 )
 
+type Claims struct {
+	Issuer    string    `json:"iss"`
+	Subject   string    `json:"sub"`
+	Scopes    []string  `json:"scopes"`
+	IssuedAt  time.Time `json:"iat"`
+	ExpiresAt time.Time `json:"exp"`
+	Nonce     string    `json:"nonce"`
