@@ -10,3 +10,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/aegistrace/aegistrace/journal"
+)
+
+type Sibling struct {
+	Hash string `json:"hash"`
+	Left bool   `json:"left"`
+}
+type Attestation struct {
+	Version    string    `json:"version"`
+	EventIndex int       `json:"event_index"`
+	EventCount int       `json:"event_count"`
