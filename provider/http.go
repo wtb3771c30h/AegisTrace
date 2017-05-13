@@ -33,3 +33,21 @@ func (p *HTTPModel) Execute(ctx context.Context, request Request) (Response, err
 		return Response{}, fmt.Errorf("provider %s is not configured", p.Name)
 	}
 	body := p.requestBody(request)
+	encoded, err := json.Marshal(body)
+	if err != nil {
+		return Response{}, err
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, p.Endpoint, bytes.NewReader(encoded))
+	if err != nil {
+		return Response{}, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	switch p.Style {
+	case Anthropic:
+		req.Header.Set("x-api-key", p.APIKey)
+		req.Header.Set("anthropic-version", "2023-06-01")
+	case Gemini:
+		if p.APIKey != "" {
+			req.Header.Set("x-goog-api-key", p.APIKey)
+		}
+	default:
