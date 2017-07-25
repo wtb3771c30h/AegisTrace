@@ -64,3 +64,37 @@ AegisTrace separates claims it can verify from properties that remain outside th
   <img src="docs/assets/proof-chain.svg" alt="AegisTrace journal chain and Merkle proof: an altered event breaks the chain, a valid inclusion path verifies without the journal, replay contacts no provider, and an expired capability is rejected" width="700" />
 </div>
 
+| Question | Evidence |
+|---|---|
+| Was this workflow altered after compilation? | Artifact digest validation |
+| Could the graph run forever? | Cycles are rejected before admission |
+| Was a tool undeclared? | Exact tool permission verification |
+| Was an event changed, removed, or reordered? | Journal sequence and hash-chain validation |
+| Is one event included in an attested run? | Signed Merkle inclusion proof |
+| Did replay contact an external provider? | Replay has no provider execution path |
+| Can this capability invoke the requested scope now? | Ed25519 signature, scope, and expiry checks |
+
+AegisTrace does not certify that a model response is correct, that an allowed tool is safe, or that a compromised host is trustworthy. Those boundaries are explicit so attestations remain meaningful.
+
+## Failure behavior
+
+The runtime fails closed at each boundary:
+
+- Unknown YAML fields stop compilation.
+- Modified or unknown artifact formats stop loading.
+- Missing inputs and prior-step outputs stop the affected step.
+- Provider response bodies larger than 8 MiB are rejected.
+- Workflow deadlines cancel in-flight HTTP requests.
+- Exhausted step, tool, or token budgets terminate the run.
+- Missing approval prevents guarded execution.
+- Journal-chain divergence prevents replay and proof creation.
+- Invalid signatures, roots, paths, scopes, and expirations prevent verification.
+
+Provider errors may follow an explicitly verified `on_error` edge. Without that edge, the journal records a terminal `run.failed` event.
+
+## Operational model
+
+For local development, one `aegis` process owns the workflow, provider registry, journal writer, and checkpoint directory. This keeps the trusted execution path small and makes the binary easy to inspect and deploy.
+
+For production use, run AegisTrace with a dedicated service identity, separate credentials by provider, keep MCP permissions narrow, encrypt journals and checkpoints at rest, and move attestation keys into a managed signer. The artifact and proof formats do not depend on a particular storage platform, so future distributed workers can preserve the same verification model.
+
