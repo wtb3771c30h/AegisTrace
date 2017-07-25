@@ -31,3 +31,36 @@ AegisTrace is an early, working release. The local runtime, compiler, verifier, 
 
 Source is compiled with unknown-field rejection, statically verified, and sealed into a digest-locked artifact. At run time the runtime drives every external effect through the provider boundary, writes each transition into the hash-chained journal, and can produce a signed Merkle proof. Replay reconstructs the run from the journal and never reaches a provider.
 
+| Command | Purpose |
+|---|---|
+| `aegis compile` | Parse, normalize, verify, and seal a workflow |
+| `aegis verify` | Recheck artifact digest and static invariants |
+| `aegis run` | Execute with budgets, approvals, checkpoints, and journaling |
+| `aegis replay` | Validate and reconstruct a run without network access |
+| `aegis inspect` | Read a verified event or complete journal |
+| `aegis keygen` | Generate a local Ed25519 attestation key |
+| `aegis prove` | Create a signed Merkle inclusion proof |
+| `aegis verify-proof` | Verify a proof independently of its journal |
+
+## Features
+
+- Strict YAML compiler with unknown-field rejection
+- SHA-256 sealed, portable JSON artifacts
+- Static validation of graph reachability, cycles, budgets, references, and tool permissions
+- Budgeted execution with model, tool, approval, checkpoint, and emit steps
+- Atomic local checkpoints for crash-safe state capture
+- Append-only JSONL journal with a SHA-256 hash chain
+- Offline replay with chain verification
+- Merkle inclusion proofs signed with Ed25519
+- Short-lived Ed25519 capability tokens with scoped permissions
+- OpenAI-compatible, Anthropic, Gemini, Ollama, MCP, and deterministic local adapters
+- Zero Python runtime dependency
+
+## What AegisTrace proves
+
+AegisTrace separates claims it can verify from properties that remain outside the runtime boundary.
+
+<div align="center">
+  <img src="docs/assets/proof-chain.svg" alt="AegisTrace journal chain and Merkle proof: an altered event breaks the chain, a valid inclusion path verifies without the journal, replay contacts no provider, and an expired capability is rejected" width="700" />
+</div>
+
