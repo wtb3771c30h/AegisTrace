@@ -46,3 +46,27 @@ type Result struct {
 }
 
 func (e *Engine) Run(ctx context.Context, runID string, input map[string]any) (Result, error) {
+	result := Result{RunID: runID, Outputs: make(map[string]any)}
+	if e.Providers == nil || e.Journal == nil {
+		return result, fmt.Errorf("providers and journal are required")
+	}
+	budget := e.Artifact.Workflow.Budget
+	ctx, cancel := context.WithTimeout(ctx, budget.Timeout)
+	defer cancel()
+	started := time.Now()
+	_, _ = e.Journal.Append("run.started", "", map[string]any{"artifact": e.Artifact.Digest, "input": input})
+	steps := make(map[string]workflow.Step, len(e.Artifact.Workflow.Steps))
+	for _, step := range e.Artifact.Workflow.Steps {
+		steps[step.ID] = step
+	}
+	current := e.Artifact.Workflow.Entry
+	for current != "" {
+		if err := ctx.Err(); err != nil {
+			return result, e.fail("budget timeout", err)
+		}
+		if result.Steps >= budget.MaxSteps {
+			return result, e.fail("step budget exhausted", nil)
+		}
+		step, ok := steps[current]
+		if !ok {
+			return result, e.fail("missing admitted step "+current, nil)
