@@ -20,3 +20,14 @@ type Report struct {
 	Issues   []Issue `json:"-"`
 }
 
+func (r Report) OK() bool { return len(r.Issues) == 0 }
+func (r Report) Error() error {
+	if r.OK() {
+		return nil
+	}
+	parts := make([]string, len(r.Issues))
+	for i := range r.Issues {
+		parts[i] = r.Issues[i].Error()
+	}
+	return fmt.Errorf("workflow rejected with %d issue(s): %s", len(parts), strings.Join(parts, "; "))
+}
