@@ -6,3 +6,12 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"time"
+)
+
+const (
+	ArtifactMagic   = "AEGISTRACE"
+	ArtifactVersion = "aegis/v1"
+)
+
+type Budget struct {
