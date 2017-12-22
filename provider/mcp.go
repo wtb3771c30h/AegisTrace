@@ -15,3 +15,8 @@ type MCP struct {
 	Client          *http.Client
 }
 
+type rpcRequest struct {
+	JSONRPC string `json:"jsonrpc"`
+	ID      int    `json:"id"`
+	Method  string `json:"method"`
+	Params  any    `json:"params"`
