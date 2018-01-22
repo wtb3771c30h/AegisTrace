@@ -6,3 +6,5 @@
 - [x] Static graph, permission, and budget verifier
 - [x] Model, tool, approval, checkpoint, and emit steps
 - [x] Hash-chained journals and offline replay
+- [x] Merkle/Ed25519 event proofs
+- [x] Scoped capability tokens
