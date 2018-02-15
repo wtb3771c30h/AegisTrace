@@ -31,3 +31,14 @@ func (r Report) Error() error {
 	}
 	return fmt.Errorf("workflow rejected with %d issue(s): %s", len(parts), strings.Join(parts, "; "))
 }
+
+func Verify(w workflow.Workflow) Report {
+	r := Report{Workflow: w.Name, Steps: len(w.Steps)}
+	add := func(path, message string) { r.Issues = append(r.Issues, Issue{path, message}) }
+	if strings.TrimSpace(w.Name) == "" {
+		add("name", "is required")
+	}
+	if strings.TrimSpace(w.Version) == "" {
+		add("version", "is required")
+	}
+	if w.Budget.MaxSteps <= 0 {
