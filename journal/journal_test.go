@@ -16,3 +16,6 @@ func TestJournalRoundTripAndTamperDetection(t *testing.T) {
 	}
 	if _, err := writer.Append("run.started", "", map[string]any{"input": "safe"}); err != nil {
 		t.Fatal(err)
+	}
+	if _, err := writer.Append("step.completed", "one", map[string]any{"output": "ok"}); err != nil {
+		t.Fatal(err)
