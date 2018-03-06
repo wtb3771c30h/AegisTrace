@@ -20,3 +20,9 @@ type rpcRequest struct {
 	ID      int    `json:"id"`
 	Method  string `json:"method"`
 	Params  any    `json:"params"`
+}
+type rpcResponse struct {
+	Result any `json:"result"`
+	Error  *struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
