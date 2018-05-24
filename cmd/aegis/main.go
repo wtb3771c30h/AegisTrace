@@ -114,3 +114,32 @@ func runCommand(args []string) error {
 		return err
 	}
 	if fs.NArg() != 1 {
+		return fmt.Errorf("usage: aegis run workflow.aegis [options]")
+	}
+	artifact, err := compiler.Load(fs.Arg(0))
+	if err != nil {
+		return err
+	}
+	var input map[string]any
+	if err := json.Unmarshal([]byte(*inputJSON), &input); err != nil {
+		return fmt.Errorf("input: %w", err)
+	}
+	runID, err := randomID()
+	if err != nil {
+		return err
+	}
+	writer, err := journal.Create(*journalPath, runID)
+	if err != nil {
+		return err
+	}
+	defer writer.Close()
+	registry := provider.NewRegistry()
+	_ = registry.Register("echo", provider.Echo{})
+	registerEnvironment(registry)
+	engine := aegisruntime.Engine{Artifact: artifact, Providers: registry, Journal: writer, Checkpoints: checkpoint.FileStore{Directory: ".aegis/checkpoints"}}
+	if *approve {
+		engine.Approver = allowApprover{}
+	}
+	result, err := engine.Run(context.Background(), runID, input)
+	if err != nil {
+		return err
