@@ -35,3 +35,15 @@ type KeyFile struct {
 	Private string `json:"private"`
 }
 
+func GenerateKey(path string) (ed25519.PublicKey, error) {
+	pub, priv, err := ed25519.GenerateKey(rand.Reader)
+	if err != nil {
+		return nil, fmt.Errorf("generate key: %w", err)
+	}
+	key := KeyFile{"aegis-key/v1", base64.StdEncoding.EncodeToString(pub), base64.StdEncoding.EncodeToString(priv)}
+	data, _ := json.MarshalIndent(key, "", "  ")
+	if err := os.WriteFile(path, append(data, '\n'), 0o600); err != nil {
+		return nil, fmt.Errorf("write key: %w", err)
+	}
+	return pub, nil
+}
