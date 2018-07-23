@@ -22,3 +22,9 @@ func TestRunCheckpointAndReplay(t *testing.T) {
 	artifact, err := workflow.NewArtifact(w, time.Now())
 	if err != nil {
 		t.Fatal(err)
+	}
+	calls := 0
+	registry := provider.NewRegistry()
+	if err := registry.Register("test", provider.Func(func(_ context.Context, request provider.Request) (provider.Response, error) {
+		calls++
+		return provider.Response{Output: request.Input, UsageTokens: 2}, nil
