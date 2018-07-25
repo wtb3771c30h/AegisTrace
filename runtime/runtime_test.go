@@ -28,3 +28,9 @@ func TestRunCheckpointAndReplay(t *testing.T) {
 	if err := registry.Register("test", provider.Func(func(_ context.Context, request provider.Request) (provider.Response, error) {
 		calls++
 		return provider.Response{Output: request.Input, UsageTokens: 2}, nil
+	})); err != nil {
+		t.Fatal(err)
+	}
+	dir := t.TempDir()
+	path := filepath.Join(dir, "run.atlog")
+	writer, err := journal.Create(path, "integration-run")
