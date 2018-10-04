@@ -6,3 +6,5 @@ import (
 	"testing"
 	"time"
 
+	"github.com/aegistrace/aegistrace/policy"
+)
