@@ -8,3 +8,9 @@ import (
 	"time"
 
 	"github.com/aegistrace/aegistrace/compiler"
+)
+
+const validWorkflow = `
+name: test
+version: "1"
+budget:
