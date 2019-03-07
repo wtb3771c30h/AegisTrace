@@ -67,3 +67,20 @@ func (w *Writer) Close() error {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	if w.file == nil {
+		return nil
+	}
+	err := w.file.Close()
+	w.file = nil
+	return err
+}
+
+func Load(path string) ([]Event, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, fmt.Errorf("open journal: %w", err)
+	}
+	defer f.Close()
+	var events []Event
+	s := bufio.NewScanner(f)
+	s.Buffer(make([]byte, 64*1024), 4*1024*1024)
+	for line := 1; s.Scan(); line++ {
