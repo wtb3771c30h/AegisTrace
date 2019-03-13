@@ -16,3 +16,9 @@ type Request struct {
 	MaxTokens int            `json:"max_tokens,omitempty"`
 }
 
+type Response struct {
+	Output      any               `json:"output"`
+	UsageTokens int               `json:"usage_tokens,omitempty"`
+	Metadata    map[string]string `json:"metadata,omitempty"`
+}
+
