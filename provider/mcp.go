@@ -26,3 +26,9 @@ type rpcResponse struct {
 	Error  *struct {
 		Code    int    `json:"code"`
 		Message string `json:"message"`
+	} `json:"error"`
+}
+
+func (m *MCP) Execute(ctx context.Context, request Request) (Response, error) {
+	if m.Endpoint == "" {
+		return Response{}, fmt.Errorf("MCP endpoint is not configured")
