@@ -98,3 +98,36 @@ For local development, one `aegis` process owns the workflow, provider registry,
 
 For production use, run AegisTrace with a dedicated service identity, separate credentials by provider, keep MCP permissions narrow, encrypt journals and checkpoints at rest, and move attestation keys into a managed signer. The artifact and proof formats do not depend on a particular storage platform, so future distributed workers can preserve the same verification model.
 
+A typical promotion flow is:
+
+```text
+source review -> compile -> verify -> sign/release artifact
+                                      |
+                                      v
+                               execute with policy
+                                      |
+                         journal + checkpoints + proof
+                                      |
+                                      v
+                              audit / replay / CI
+```
+
+## Install
+
+AegisTrace requires Go 1.22 or newer.
+
+```sh
+go install github.com/aegistrace/aegistrace/cmd/aegis@latest
+```
+
+From a checkout:
+
+```sh
+go build -o aegis ./cmd/aegis
+go test ./...
+```
+
+## Quick start
+
+Compile and verify the example:
+
