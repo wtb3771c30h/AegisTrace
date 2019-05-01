@@ -27,3 +27,9 @@ func Parse(source []byte) (workflow.Workflow, error) {
 	}
 	normalize(&w)
 	return w, nil
+}
+
+func normalize(w *workflow.Workflow) {
+	if w.Version == "" {
+		w.Version = "1"
+	}
