@@ -11,3 +11,7 @@ import (
 )
 
 func TestAttestation(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "run.atlog")
+	writer, err := journal.Create(path, "proof-run")
+	if err != nil {
+		t.Fatal(err)
