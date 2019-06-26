@@ -28,3 +28,9 @@ type Provider interface {
 type Func func(context.Context, Request) (Response, error)
 
 func (f Func) Execute(ctx context.Context, r Request) (Response, error) { return f(ctx, r) }
+
+type Registry struct {
+	mu        sync.RWMutex
+	providers map[string]Provider
+}
+
