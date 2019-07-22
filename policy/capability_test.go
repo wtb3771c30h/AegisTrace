@@ -8,3 +8,5 @@ import (
 
 	"github.com/aegistrace/aegistrace/policy"
 )
+
+func TestCapabilityScopeAndExpiry(t *testing.T) {
