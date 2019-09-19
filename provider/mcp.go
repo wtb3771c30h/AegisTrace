@@ -37,3 +37,9 @@ func (m *MCP) Execute(ctx context.Context, request Request) (Response, error) {
 	body, err := json.Marshal(payload)
 	if err != nil {
 		return Response{}, err
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, m.Endpoint, bytes.NewReader(body))
+	if err != nil {
+		return Response{}, err
+	}
+	req.Header.Set("Content-Type", "application/json")
