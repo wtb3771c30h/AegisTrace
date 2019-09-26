@@ -33,3 +33,9 @@ func normalize(w *workflow.Workflow) {
 	if w.Version == "" {
 		w.Version = "1"
 	}
+	if w.Entry == "" && len(w.Steps) > 0 {
+		w.Entry = w.Steps[0].ID
+	}
+	if w.Budget.MaxSteps == 0 {
+		w.Budget.MaxSteps = max(32, len(w.Steps)*2)
+	}
