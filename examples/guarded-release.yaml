@@ -5,3 +5,5 @@ entry: prepare
 budget:
   max_steps: 6
   max_tool_calls: 1
+  max_tokens: 0
+  timeout: 20s
