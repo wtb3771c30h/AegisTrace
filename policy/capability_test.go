@@ -10,3 +10,5 @@ import (
 )
 
 func TestCapabilityScopeAndExpiry(t *testing.T) {
+	public, private, err := ed25519.GenerateKey(rand.Reader)
+	if err != nil {
