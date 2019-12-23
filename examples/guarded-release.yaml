@@ -7,3 +7,5 @@ budget:
   max_tool_calls: 1
   max_tokens: 0
   timeout: 20s
+permissions:
+  - tool: deployment.release
