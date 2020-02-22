@@ -29,3 +29,13 @@ type Store interface {
 	Load(string) (State, error)
 }
 type FileStore struct{ Directory string }
+
+func (s FileStore) Save(state State) error {
+	if !safeID.MatchString(state.RunID) {
+		return fmt.Errorf("invalid run id")
+	}
+	if err := os.MkdirAll(s.Directory, 0o700); err != nil {
+		return err
+	}
+	state.Version, state.SavedAt = "aegis-checkpoint/v1", time.Now().UTC()
+	data, err := json.MarshalIndent(state, "", "  ")
