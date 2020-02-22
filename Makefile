@@ -7,3 +7,7 @@ all: check build
 build:
 	go build -trimpath -o $(BINARY) ./cmd/aegis
 
+test:
+	go test ./...
+
+race:
