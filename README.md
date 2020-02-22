@@ -131,3 +131,36 @@ go test ./...
 
 Compile and verify the example:
 
+```sh
+aegis compile examples/echo-agent.yaml -o echo.aegis
+aegis verify echo.aegis
+```
+
+Run it and retain the audit journal:
+
+```sh
+aegis run echo.aegis \
+  --input '{"message":"Investigate checkout latency"}' \
+  --journal run.atlog
+```
+
+Replay and inspect without invoking tools:
+
+```sh
+aegis replay run.atlog
+aegis inspect run.atlog --event 2
+```
+
+Create a signed inclusion proof:
+
+```sh
+aegis keygen -o signing-key.json
+aegis prove run.atlog --event 2 --key signing-key.json -o event.proof.json
+aegis verify-proof event.proof.json
+```
+
+## Workflow example
+
+```yaml
+name: issue-triage
+version: "1"
