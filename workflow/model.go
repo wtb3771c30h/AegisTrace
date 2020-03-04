@@ -40,3 +40,12 @@ func (b *Budget) UnmarshalYAML(unmarshal func(any) error) error {
 	if err != nil {
 		return fmt.Errorf("invalid timeout %q: %w", raw.Timeout, err)
 	}
+	b.Timeout = d
+	return nil
+}
+
+type Permission struct {
+	Tool   string   `json:"tool" yaml:"tool"`
+	Scopes []string `json:"scopes,omitempty" yaml:"scopes,omitempty"`
+}
+
