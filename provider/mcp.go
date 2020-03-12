@@ -43,3 +43,9 @@ func (m *MCP) Execute(ctx context.Context, request Request) (Response, error) {
 		return Response{}, err
 	}
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json, text/event-stream")
+	if m.Token != "" {
+		req.Header.Set("Authorization", "Bearer "+m.Token)
+	}
+	client := m.Client
+	if client == nil {
