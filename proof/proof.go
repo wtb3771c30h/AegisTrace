@@ -47,3 +47,16 @@ func GenerateKey(path string) (ed25519.PublicKey, error) {
 	}
 	return pub, nil
 }
+
+func LoadPrivate(path string) (ed25519.PrivateKey, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("read key: %w", err)
+	}
+	var key KeyFile
+	if err := json.Unmarshal(data, &key); err != nil {
+		return nil, fmt.Errorf("decode key: %w", err)
+	}
+	raw, err := base64.StdEncoding.DecodeString(key.Private)
+	if err != nil {
+		return nil, fmt.Errorf("decode private key: %w", err)
