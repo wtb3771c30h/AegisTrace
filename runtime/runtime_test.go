@@ -40,3 +40,9 @@ func TestRunCheckpointAndReplay(t *testing.T) {
 	engine := aegisruntime.Engine{Artifact: artifact, Providers: registry, Journal: writer, Checkpoints: checkpoint.FileStore{Directory: filepath.Join(dir, "checkpoints")}}
 	result, err := engine.Run(context.Background(), "integration-run", map[string]any{"message": "hello"})
 	if err != nil {
+		t.Fatal(err)
+	}
+	if err := writer.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if calls != 2 || result.Steps != 3 || result.ToolCalls != 1 || result.Tokens != 4 {
