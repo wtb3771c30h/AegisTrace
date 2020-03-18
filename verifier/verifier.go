@@ -75,3 +75,14 @@ func Verify(w workflow.Workflow) Report {
 		}
 		if _, exists := steps[s.ID]; exists {
 			add(path+".id", "duplicate id "+s.ID)
+		}
+		steps[s.ID] = s
+		if !allowedKinds[s.Kind] {
+			add(path+".kind", "must be model, tool, approval, checkpoint, or emit")
+		}
+		if (s.Kind == "model" || s.Kind == "tool") && s.Provider == "" {
+			add(path+".provider", "is required")
+		}
+		if s.Kind == "tool" {
+			if s.Action == "" {
+				add(path+".action", "is required")
