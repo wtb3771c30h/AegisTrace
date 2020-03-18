@@ -9,3 +9,4 @@ builds:
     binary: aegis
     env:
       - CGO_ENABLED=0
+    goos: [linux, windows, darwin]
