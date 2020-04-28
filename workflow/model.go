@@ -49,3 +49,11 @@ type Permission struct {
 	Scopes []string `json:"scopes,omitempty" yaml:"scopes,omitempty"`
 }
 
+type Step struct {
+	ID               string         `json:"id" yaml:"id"`
+	Kind             string         `json:"kind" yaml:"kind"`
+	Provider         string         `json:"provider,omitempty" yaml:"provider,omitempty"`
+	Action           string         `json:"action,omitempty" yaml:"action,omitempty"`
+	Input            map[string]any `json:"input,omitempty" yaml:"input,omitempty"`
+	Next             string         `json:"next,omitempty" yaml:"next,omitempty"`
+	OnError          string         `json:"on_error,omitempty" yaml:"on_error,omitempty"`
