@@ -57,3 +57,12 @@ type Step struct {
 	Input            map[string]any `json:"input,omitempty" yaml:"input,omitempty"`
 	Next             string         `json:"next,omitempty" yaml:"next,omitempty"`
 	OnError          string         `json:"on_error,omitempty" yaml:"on_error,omitempty"`
+	RequiresApproval bool           `json:"requires_approval,omitempty" yaml:"requires_approval,omitempty"`
+}
+
+type Workflow struct {
+	Name        string            `json:"name" yaml:"name"`
+	Version     string            `json:"version" yaml:"version"`
+	Description string            `json:"description,omitempty" yaml:"description,omitempty"`
+	Entry       string            `json:"entry" yaml:"entry"`
+	Budget      Budget            `json:"budget" yaml:"budget"`
