@@ -19,3 +19,7 @@ AegisTrace considers malicious workflow authors, compromised or misleading model
 - Deleted, reordered, inserted, or modified journal events are detectable when the chain is verified.
 - A valid proof binds an event hash to a signed journal Merkle root.
 - Capabilities cannot be altered without invalidating their signature and are checked for expiry and required scope.
+- Provider calls respect workflow context deadlines and bounded response reads.
+
+## Non-guarantees
+
