@@ -60,3 +60,15 @@ func LoadPrivate(path string) (ed25519.PrivateKey, error) {
 	raw, err := base64.StdEncoding.DecodeString(key.Private)
 	if err != nil {
 		return nil, fmt.Errorf("decode private key: %w", err)
+	}
+	if len(raw) != ed25519.PrivateKeySize {
+		return nil, fmt.Errorf("invalid private key length")
+	}
+	return ed25519.PrivateKey(raw), nil
+}
+
+func Create(events []journal.Event, index int, private ed25519.PrivateKey) (Attestation, error) {
+	if err := journal.Verify(events); err != nil {
+		return Attestation{}, err
+	}
+	if index < 0 || index >= len(events) {
