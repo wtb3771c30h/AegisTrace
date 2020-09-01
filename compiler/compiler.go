@@ -45,3 +45,9 @@ func normalize(w *workflow.Workflow) {
 	for i := 0; i+1 < len(w.Steps); i++ {
 		if w.Steps[i].Next == "" {
 			w.Steps[i].Next = w.Steps[i+1].ID
+		}
+	}
+}
+
+func Compile(source []byte, now time.Time) (workflow.Artifact, verifier.Report, error) {
+	w, err := Parse(source)
