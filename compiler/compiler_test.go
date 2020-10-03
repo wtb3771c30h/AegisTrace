@@ -24,3 +24,9 @@ steps:
   - id: first
     kind: emit
     input:
+      value: ok
+  - id: second
+    kind: tool
+    provider: echo
+    action: task.create
+`
