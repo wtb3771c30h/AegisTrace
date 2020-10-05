@@ -16,3 +16,5 @@ func TestCapabilityScopeAndExpiry(t *testing.T) {
 	}
 	now := time.Date(2026, 8, 31, 2, 0, 0, 0, time.UTC)
 	token, err := policy.Issue(private, "scheduler", "worker-1", []string{"github:read", "ticket:*"}, time.Minute, now)
+	if err != nil {
+		t.Fatal(err)
