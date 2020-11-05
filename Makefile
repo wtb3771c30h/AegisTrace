@@ -14,3 +14,6 @@ race:
 	go test -race ./...
 
 vet:
+	go vet ./...
+
+fmt:
