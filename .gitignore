@@ -6,3 +6,4 @@
 
 # Runtime state
 /.aegis/
+*.aegis
