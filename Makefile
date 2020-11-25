@@ -21,3 +21,6 @@ fmt:
 
 lint:
 	golangci-lint run
+
+check: vet race
+
