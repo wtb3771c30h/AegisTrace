@@ -17,3 +17,7 @@ vet:
 	go vet ./...
 
 fmt:
+	gofmt -w $$(find . -name '*.go')
+
+lint:
+	golangci-lint run
