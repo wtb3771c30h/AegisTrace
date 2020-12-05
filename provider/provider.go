@@ -34,3 +34,9 @@ type Registry struct {
 	providers map[string]Provider
 }
 
+func NewRegistry() *Registry { return &Registry{providers: make(map[string]Provider)} }
+func (r *Registry) Register(name string, p Provider) error {
+	if name == "" || p == nil {
+		return fmt.Errorf("provider name and implementation are required")
+	}
+	r.mu.Lock()
