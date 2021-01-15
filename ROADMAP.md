@@ -11,3 +11,6 @@
 - [x] Major HTTP model protocols and MCP tool calls
 
 ## 0.2 — Operational hardening
+
+- [ ] Encrypted journal envelopes
+- [ ] Resume command backed by validated checkpoints
