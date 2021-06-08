@@ -14,3 +14,5 @@ steps:
     kind: emit
     input:
       release: ${input.release}
+  - id: authorize
+    kind: approval
