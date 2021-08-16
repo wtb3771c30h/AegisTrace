@@ -40,3 +40,9 @@ func (r *Registry) Register(name string, p Provider) error {
 		return fmt.Errorf("provider name and implementation are required")
 	}
 	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.providers[name] = p
+	return nil
+}
+func (r *Registry) Get(name string) (Provider, error) {
+	r.mu.RLock()
