@@ -25,3 +25,6 @@ func TestJournalRoundTripAndTamperDetection(t *testing.T) {
 	}
 	events, err := journal.Load(path)
 	if err != nil {
+		t.Fatal(err)
+	}
+	if len(events) != 2 {
