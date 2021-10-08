@@ -66,3 +66,11 @@ type Workflow struct {
 	Description string            `json:"description,omitempty" yaml:"description,omitempty"`
 	Entry       string            `json:"entry" yaml:"entry"`
 	Budget      Budget            `json:"budget" yaml:"budget"`
+	Permissions []Permission      `json:"permissions,omitempty" yaml:"permissions,omitempty"`
+	Metadata    map[string]string `json:"metadata,omitempty" yaml:"metadata,omitempty"`
+	Steps       []Step            `json:"steps" yaml:"steps"`
+}
+
+type Artifact struct {
+	Magic      string    `json:"magic"`
+	Format     string    `json:"format"`
