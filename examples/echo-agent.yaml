@@ -12,3 +12,5 @@ permissions:
 metadata:
   owner: platform-engineering
 steps:
+  - id: classify
+    kind: model
