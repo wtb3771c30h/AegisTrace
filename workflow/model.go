@@ -74,3 +74,12 @@ type Workflow struct {
 type Artifact struct {
 	Magic      string    `json:"magic"`
 	Format     string    `json:"format"`
+	Digest     string    `json:"digest"`
+	CompiledAt time.Time `json:"compiled_at"`
+	Workflow   Workflow  `json:"workflow"`
+}
+
+func Digest(w Workflow) (string, error) {
+	data, err := json.Marshal(w)
+	if err != nil {
+		return "", fmt.Errorf("canonicalize workflow: %w", err)
