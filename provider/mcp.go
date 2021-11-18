@@ -49,3 +49,8 @@ func (m *MCP) Execute(ctx context.Context, request Request) (Response, error) {
 	}
 	client := m.Client
 	if client == nil {
+		client = &http.Client{Timeout: 60 * time.Second}
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return Response{}, fmt.Errorf("MCP call: %w", err)
