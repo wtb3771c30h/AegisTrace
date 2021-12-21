@@ -30,3 +30,8 @@ steps:
     provider: echo
     action: task.create
 `
+
+func TestCompileNormalizesAndSeals(t *testing.T) {
+	now := time.Date(2026, 8, 31, 1, 2, 3, 0, time.UTC)
+	artifact, report, err := compiler.Compile([]byte(validWorkflow), now)
+	if err != nil {
