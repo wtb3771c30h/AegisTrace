@@ -72,3 +72,16 @@ func Create(events []journal.Event, index int, private ed25519.PrivateKey) (Atte
 		return Attestation{}, err
 	}
 	if index < 0 || index >= len(events) {
+		return Attestation{}, fmt.Errorf("event index out of range")
+	}
+	leaves, err := eventLeaves(events)
+	if err != nil {
+		return Attestation{}, err
+	}
+	path, root := merklePath(leaves, index)
+	message := []byte("aegistrace-proof-v1\n" + hex.EncodeToString(root))
+	pub := private.Public().(ed25519.PublicKey)
+	return Attestation{
+		Version: "aegis-proof/v1", EventIndex: index, EventCount: len(events), EventHash: events[index].Hash,
+		Root: hex.EncodeToString(root), Path: path, PublicKey: base64.StdEncoding.EncodeToString(pub),
+		Signature: base64.StdEncoding.EncodeToString(ed25519.Sign(private, message)),
