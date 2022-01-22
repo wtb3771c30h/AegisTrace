@@ -14,3 +14,9 @@ func base() workflow.Workflow {
 }
 
 func TestVerifyAcceptsFiniteWorkflow(t *testing.T) {
+	report := verifier.Verify(base())
+	if err := report.Error(); err != nil {
+		t.Fatal(err)
+	}
+}
+
