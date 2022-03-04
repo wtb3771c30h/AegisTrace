@@ -20,3 +20,5 @@ func TestCapabilityScopeAndExpiry(t *testing.T) {
 		t.Fatal(err)
 	}
 	claims, err := policy.Verify(token, public, "ticket:create", now.Add(30*time.Second))
+	if err != nil {
+		t.Fatal(err)
