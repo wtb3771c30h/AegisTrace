@@ -142,3 +142,27 @@ func (e *Engine) execute(ctx context.Context, runID string, step workflow.Step, 
 		return response.Output, response.UsageTokens, err
 	case "checkpoint":
 		return map[string]any{"checkpoint": step.ID}, 0, nil
+	case "emit":
+		return input, 0, nil
+	default:
+		return nil, 0, fmt.Errorf("unsupported admitted step kind %q", step.Kind)
+	}
+}
+
+func (e *Engine) fail(message string, cause error) error {
+	text := message
+	if cause != nil {
+		text += ": " + cause.Error()
+	}
+	_, _ = e.Journal.Append("run.failed", "", map[string]any{"error": text})
+	return fmt.Errorf("%s", text)
+}
+func (e *Engine) stepFailure(step workflow.Step, cause error) error {
+	return e.fail("resolve step "+step.ID, cause)
+}
+
+func Replay(events []journal.Event) (Result, error) {
+	var result Result
+	if err := journal.Verify(events); err != nil {
+		return result, err
+	}
