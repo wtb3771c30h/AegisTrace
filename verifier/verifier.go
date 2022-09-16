@@ -86,3 +86,14 @@ func Verify(w workflow.Workflow) Report {
 		if s.Kind == "tool" {
 			if s.Action == "" {
 				add(path+".action", "is required")
+			}
+			if !permissions[s.Action] && !permissions["*"] {
+				add(path+".action", "tool is not permitted")
+			}
+		}
+	}
+	if _, ok := steps[w.Entry]; !ok {
+		add("entry", "does not reference a step")
+	}
+	for i, s := range w.Steps {
+		for field, target := range map[string]string{"next": s.Next, "on_error": s.OnError} {
