@@ -35,3 +35,8 @@ func TestCompileNormalizesAndSeals(t *testing.T) {
 	now := time.Date(2026, 8, 31, 1, 2, 3, 0, time.UTC)
 	artifact, report, err := compiler.Compile([]byte(validWorkflow), now)
 	if err != nil {
+		t.Fatal(err)
+	}
+	if report.Steps != 2 || artifact.Workflow.Entry != "first" {
+		t.Fatalf("unexpected report or entry: %#v %#v", report, artifact.Workflow)
+	}
