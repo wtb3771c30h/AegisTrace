@@ -51,3 +51,9 @@ func normalize(w *workflow.Workflow) {
 
 func Compile(source []byte, now time.Time) (workflow.Artifact, verifier.Report, error) {
 	w, err := Parse(source)
+	if err != nil {
+		return workflow.Artifact{}, verifier.Report{}, err
+	}
+	report := verifier.Verify(w)
+	if err := report.Error(); err != nil {
+		return workflow.Artifact{}, report, err
