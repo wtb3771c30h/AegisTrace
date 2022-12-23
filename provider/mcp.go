@@ -54,3 +54,9 @@ func (m *MCP) Execute(ctx context.Context, request Request) (Response, error) {
 	resp, err := client.Do(req)
 	if err != nil {
 		return Response{}, fmt.Errorf("MCP call: %w", err)
+	}
+	defer resp.Body.Close()
+	raw, err := io.ReadAll(io.LimitReader(resp.Body, 8<<20))
+	if err != nil {
+		return Response{}, err
+	}
