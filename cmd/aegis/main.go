@@ -201,3 +201,32 @@ func keygenCommand(args []string) error {
 	pub, err := proof.GenerateKey(*output)
 	if err != nil {
 		return err
+	}
+	fmt.Printf("created %s\npublic  %x\n", *output, []byte(pub))
+	return nil
+}
+
+func proveCommand(args []string) error {
+	fs := flag.NewFlagSet("prove", flag.ContinueOnError)
+	index := fs.Int("event", -1, "event index")
+	key := fs.String("key", "aegis-signing-key.json", "private key")
+	output := fs.String("o", "proof.json", "proof path")
+	if err := fs.Parse(interspersed(args)); err != nil {
+		return err
+	}
+	if fs.NArg() != 1 || *index < 0 {
+		return fmt.Errorf("usage: aegis prove run.atlog --event N --key key.json [-o proof.json]")
+	}
+	events, err := journal.Load(fs.Arg(0))
+	if err != nil {
+		return err
+	}
+	private, err := proof.LoadPrivate(*key)
+	if err != nil {
+		return err
+	}
+	attestation, err := proof.Create(events, *index, private)
+	if err != nil {
+		return err
+	}
+	data, _ := json.MarshalIndent(attestation, "", "  ")
