@@ -84,3 +84,20 @@ func Load(path string) ([]Event, error) {
 	s := bufio.NewScanner(f)
 	s.Buffer(make([]byte, 64*1024), 4*1024*1024)
 	for line := 1; s.Scan(); line++ {
+		var e Event
+		if err := json.Unmarshal(s.Bytes(), &e); err != nil {
+			return nil, fmt.Errorf("journal line %d: %w", line, err)
+		}
+		events = append(events, e)
+	}
+	if err := s.Err(); err != nil {
+		return nil, fmt.Errorf("read journal: %w", err)
+	}
+	return events, nil
+}
+
+func Verify(events []Event) error {
+	previous := ""
+	for i, e := range events {
+		if e.Sequence != uint64(i) {
+			return fmt.Errorf("event %d has sequence %d", i, e.Sequence)
