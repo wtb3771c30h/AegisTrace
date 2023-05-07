@@ -164,3 +164,37 @@ aegis verify-proof event.proof.json
 ```yaml
 name: issue-triage
 version: "1"
+entry: classify
+budget:
+  max_steps: 8
+  max_tool_calls: 1
+  max_tokens: 1000
+  timeout: 30s
+permissions:
+  - tool: ticket.create
+steps:
+  - id: classify
+    kind: model
+    provider: echo
+    input:
+      prompt: ${input.message}
+  - id: save
+    kind: checkpoint
+  - id: create
+    kind: tool
+    provider: echo
+    action: ticket.create
+    requires_approval: true
+    input:
+      classification: ${steps.classify}
+  - id: result
+    kind: emit
+    input:
+      ticket: ${steps.create}
+```
+
+Blank `next` fields are normalized to the following step. Explicit `next` and `on_error` edges are supported. Workflows must form a finite DAG; unbounded loops are rejected.
+
+## Providers
+
+`echo` is always available and makes no network calls. Other adapters are enabled only when their endpoint environment variable is set.
