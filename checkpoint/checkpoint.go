@@ -50,3 +50,13 @@ func (s FileStore) Save(state State) error {
 	if err := os.Rename(temp, path); err != nil {
 		_ = os.Remove(temp)
 		return fmt.Errorf("commit checkpoint: %w", err)
+	}
+	return nil
+}
+
+func (s FileStore) Load(runID string) (State, error) {
+	var state State
+	if !safeID.MatchString(runID) {
+		return state, fmt.Errorf("invalid run id")
+	}
+	data, err := os.ReadFile(filepath.Join(s.Directory, runID+".json"))
