@@ -83,3 +83,11 @@ func Digest(w Workflow) (string, error) {
 	data, err := json.Marshal(w)
 	if err != nil {
 		return "", fmt.Errorf("canonicalize workflow: %w", err)
+	}
+	sum := sha256.Sum256(data)
+	return "sha256:" + hex.EncodeToString(sum[:]), nil
+}
+
+func NewArtifact(w Workflow, now time.Time) (Artifact, error) {
+	digest, err := Digest(w)
+	if err != nil {
