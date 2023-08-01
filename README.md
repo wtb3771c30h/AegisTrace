@@ -198,3 +198,36 @@ Blank `next` fields are normalized to the following step. Explicit `next` and `o
 ## Providers
 
 `echo` is always available and makes no network calls. Other adapters are enabled only when their endpoint environment variable is set.
+
+| Provider | Endpoint variable | Credential variable |
+|---|---|---|
+| OpenAI-compatible | `AEGIS_OPENAI_ENDPOINT` | `OPENAI_API_KEY` |
+| Anthropic | `AEGIS_ANTHROPIC_ENDPOINT` | `ANTHROPIC_API_KEY` |
+| Gemini | `AEGIS_GEMINI_ENDPOINT` | `GEMINI_API_KEY` |
+| Ollama | `AEGIS_OLLAMA_ENDPOINT` | none |
+| MCP | `AEGIS_MCP_ENDPOINT` | `AEGIS_MCP_TOKEN` |
+
+Provider responses are capped at 8 MiB. HTTP clients use request deadlines inherited from the workflow budget.
+
+## Security model
+
+A valid artifact proves structural properties; it does not prove that a model response is truthful or a permitted tool is harmless. Provider credentials remain process-local and are never inserted by AegisTrace into workflow artifacts. Journal files can contain sensitive inputs and outputs and are created with owner-only permissions where supported.
+
+Read [SECURITY.md](SECURITY.md) and [THREAT_MODEL.md](THREAT_MODEL.md) before production use.
+
+## Formats and compatibility
+
+- Workflow source: YAML
+- Artifact: `aegis/v1` JSON with a SHA-256 workflow digest
+- Journal: newline-delimited JSON with per-event chaining
+- Proof: `aegis-proof/v1` JSON
+- Capability: signed compact token with `aegis-cap/v1` domain separation
+- Checkpoint: `aegis-checkpoint/v1` JSON
+
+Versioned formats are documented in [SPECIFICATION.md](SPECIFICATION.md). Unknown artifact fields are rejected to prevent ambiguous interpretation.
+
+## Repository layout
+
+```text
+cmd/aegis/      command-line interface
+workflow/       portable schema and artifact seal
