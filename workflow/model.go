@@ -91,3 +91,12 @@ func Digest(w Workflow) (string, error) {
 func NewArtifact(w Workflow, now time.Time) (Artifact, error) {
 	digest, err := Digest(w)
 	if err != nil {
+		return Artifact{}, err
+	}
+	return Artifact{Magic: ArtifactMagic, Format: ArtifactVersion, Digest: digest, CompiledAt: now.UTC(), Workflow: w}, nil
+}
+
+func (a Artifact) ValidateSeal() error {
+	if a.Magic != ArtifactMagic || a.Format != ArtifactVersion {
+		return fmt.Errorf("unsupported artifact %q/%q", a.Magic, a.Format)
+	}
