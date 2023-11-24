@@ -22,3 +22,5 @@
 ## 0.3 — Distributed execution
 
 - [ ] PostgreSQL state and lease backend
+- [ ] Object-store checkpoint backend
+- [ ] Signed worker identity and capability delegation
