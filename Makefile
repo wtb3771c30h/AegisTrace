@@ -24,3 +24,6 @@ lint:
 
 check: vet race
 
+smoke: build
+	./$(BINARY) compile examples/echo-agent.yaml -o smoke.aegis
+	./$(BINARY) verify smoke.aegis
