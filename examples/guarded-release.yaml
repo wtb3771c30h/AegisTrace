@@ -19,3 +19,5 @@ steps:
     input:
       release: ${steps.prepare}
   - id: deploy
+    kind: tool
+    provider: echo
