@@ -28,3 +28,6 @@ func TestJournalRoundTripAndTamperDetection(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(events) != 2 {
+		t.Fatalf("got %d events", len(events))
+	}
+	if err := journal.Verify(events); err != nil {
