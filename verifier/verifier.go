@@ -97,3 +97,14 @@ func Verify(w workflow.Workflow) Report {
 	}
 	for i, s := range w.Steps {
 		for field, target := range map[string]string{"next": s.Next, "on_error": s.OnError} {
+			if target != "" {
+				r.Edges++
+				if _, ok := steps[target]; !ok {
+					add(fmt.Sprintf("steps[%d].%s", i, field), "unknown target "+target)
+				}
+			}
+		}
+	}
+	if len(r.Issues) > 0 {
+		return r
+	}
