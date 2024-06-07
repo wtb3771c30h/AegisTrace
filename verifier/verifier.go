@@ -108,3 +108,14 @@ func Verify(w workflow.Workflow) Report {
 	if len(r.Issues) > 0 {
 		return r
 	}
+	verifyGraph(w.Entry, steps, &r)
+	return r
+}
+
+func verifyGraph(entry string, steps map[string]workflow.Step, r *Report) {
+	state := make(map[string]uint8)
+	reachable := make(map[string]bool)
+	var visit func(string)
+	visit = func(id string) {
+		if state[id] == 1 {
+			r.Issues = append(r.Issues, Issue{"steps", "cycle detected at " + id})
