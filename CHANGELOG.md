@@ -12,3 +12,5 @@ All notable changes follow Keep a Changelog. Versions use semantic versioning.
 
 ## [0.1.0] - 2026-08-31
 
+### Added
+
