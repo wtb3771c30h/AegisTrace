@@ -110,3 +110,15 @@ func Verify(a Attestation) error {
 	}
 	if hex.EncodeToString(current) != a.Root {
 		return fmt.Errorf("Merkle root mismatch")
+	}
+	pub, err := base64.StdEncoding.DecodeString(a.PublicKey)
+	if err != nil || len(pub) != ed25519.PublicKeySize {
+		return fmt.Errorf("invalid public key")
+	}
+	sig, err := base64.StdEncoding.DecodeString(a.Signature)
+	if err != nil {
+		return fmt.Errorf("invalid signature encoding")
+	}
+	if !ed25519.Verify(pub, []byte("aegistrace-proof-v1\n"+a.Root), sig) {
+		return fmt.Errorf("signature verification failed")
+	}
