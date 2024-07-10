@@ -11,3 +11,4 @@
 *.proof.json
 *signing-key*.json
 
+# Environment and editors
