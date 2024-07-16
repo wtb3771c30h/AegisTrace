@@ -14,3 +14,6 @@ All notable changes follow Keep a Changelog. Versions use semantic versioning.
 
 ### Added
 
+- Go-first workflow compiler and static verifier
+- Digest-sealed `aegis/v1` artifacts
+- Budgeted local runtime with approval and checkpoint steps
