@@ -24,3 +24,5 @@ func TestCapabilityScopeAndExpiry(t *testing.T) {
 		t.Fatal(err)
 	}
 	if claims.Subject != "worker-1" {
+		t.Fatal("wrong subject")
+	}
