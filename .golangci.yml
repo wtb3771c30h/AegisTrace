@@ -9,3 +9,5 @@ linters:
     - gosec
     - misspell
     - nilerr
+    - revive
+issues:
