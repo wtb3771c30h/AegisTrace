@@ -25,3 +25,9 @@ func TestVerifyRejectsCycleAndUnreachableStep(t *testing.T) {
 	w.Steps = []workflow.Step{{ID: "a", Kind: "emit", Next: "b"}, {ID: "b", Kind: "emit", Next: "a"}, {ID: "orphan", Kind: "emit"}}
 	err := verifier.Verify(w).Error()
 	if err == nil || !strings.Contains(err.Error(), "cycle detected") || !strings.Contains(err.Error(), "unreachable") {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestVerifyRejectsUnpermittedTool(t *testing.T) {
+	w := base()
