@@ -230,3 +230,32 @@ func proveCommand(args []string) error {
 		return err
 	}
 	data, _ := json.MarshalIndent(attestation, "", "  ")
+	if err := os.WriteFile(*output, append(data, '\n'), 0o644); err != nil {
+		return err
+	}
+	fmt.Printf("created %s for event %d\nroot    %s\n", *output, *index, attestation.Root)
+	return nil
+}
+
+func verifyProofCommand(args []string) error {
+	if len(args) != 1 {
+		return fmt.Errorf("usage: aegis verify-proof proof.json")
+	}
+	data, err := os.ReadFile(args[0])
+	if err != nil {
+		return err
+	}
+	var attestation proof.Attestation
+	if err := json.Unmarshal(data, &attestation); err != nil {
+		return err
+	}
+	if err := proof.Verify(attestation); err != nil {
+		return err
+	}
+	fmt.Printf("verified event %d/%d, root %s\n", attestation.EventIndex, attestation.EventCount, attestation.Root)
+	return nil
+}
+
+func registerEnvironment(registry *provider.Registry) {
+	if endpoint := os.Getenv("AEGIS_OPENAI_ENDPOINT"); endpoint != "" {
+		_ = registry.Register("openai", &provider.HTTPModel{Name: "openai", Style: provider.OpenAI, Endpoint: endpoint, APIKey: os.Getenv("OPENAI_API_KEY"), Model: env("AEGIS_OPENAI_MODEL", "gpt-4o-mini")})
