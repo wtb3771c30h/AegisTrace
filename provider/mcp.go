@@ -60,3 +60,9 @@ func (m *MCP) Execute(ctx context.Context, request Request) (Response, error) {
 	if err != nil {
 		return Response{}, err
 	}
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return Response{}, fmt.Errorf("MCP returned %s: %s", resp.Status, raw)
+	}
+	var decoded rpcResponse
+	if err := json.Unmarshal(raw, &decoded); err != nil {
+		return Response{}, fmt.Errorf("decode MCP response: %w", err)
