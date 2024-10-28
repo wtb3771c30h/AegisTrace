@@ -28,3 +28,7 @@ func TestAttestation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	_, private, err := ed25519.GenerateKey(rand.Reader)
+	if err != nil {
+		t.Fatal(err)
+	}
