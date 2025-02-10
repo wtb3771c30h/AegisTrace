@@ -24,3 +24,6 @@
 - [ ] PostgreSQL state and lease backend
 - [ ] Object-store checkpoint backend
 - [ ] Signed worker identity and capability delegation
+- [ ] Scheduler and worker daemon
+- [ ] Administrative API
+
