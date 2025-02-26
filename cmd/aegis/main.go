@@ -259,3 +259,32 @@ func verifyProofCommand(args []string) error {
 func registerEnvironment(registry *provider.Registry) {
 	if endpoint := os.Getenv("AEGIS_OPENAI_ENDPOINT"); endpoint != "" {
 		_ = registry.Register("openai", &provider.HTTPModel{Name: "openai", Style: provider.OpenAI, Endpoint: endpoint, APIKey: os.Getenv("OPENAI_API_KEY"), Model: env("AEGIS_OPENAI_MODEL", "gpt-4o-mini")})
+	}
+	if endpoint := os.Getenv("AEGIS_ANTHROPIC_ENDPOINT"); endpoint != "" {
+		_ = registry.Register("anthropic", &provider.HTTPModel{Name: "anthropic", Style: provider.Anthropic, Endpoint: endpoint, APIKey: os.Getenv("ANTHROPIC_API_KEY"), Model: env("AEGIS_ANTHROPIC_MODEL", "claude-sonnet-4-20250514")})
+	}
+	if endpoint := os.Getenv("AEGIS_GEMINI_ENDPOINT"); endpoint != "" {
+		_ = registry.Register("gemini", &provider.HTTPModel{Name: "gemini", Style: provider.Gemini, Endpoint: endpoint, APIKey: os.Getenv("GEMINI_API_KEY"), Model: env("AEGIS_GEMINI_MODEL", "gemini-2.5-flash")})
+	}
+	if endpoint := os.Getenv("AEGIS_OLLAMA_ENDPOINT"); endpoint != "" {
+		_ = registry.Register("ollama", &provider.HTTPModel{Name: "ollama", Style: provider.OpenAI, Endpoint: endpoint, Model: env("AEGIS_OLLAMA_MODEL", "llama3.2")})
+	}
+	if endpoint := os.Getenv("AEGIS_MCP_ENDPOINT"); endpoint != "" {
+		_ = registry.Register("mcp", &provider.MCP{Endpoint: endpoint, Token: os.Getenv("AEGIS_MCP_TOKEN")})
+	}
+}
+
+func randomID() (string, error) {
+	raw := make([]byte, 12)
+	if _, err := rand.Read(raw); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(raw), nil
+}
+func printJSON(value any) error {
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetIndent("", "  ")
+	return encoder.Encode(value)
+}
+func env(key, fallback string) string {
+	if value := os.Getenv(key); value != "" {
