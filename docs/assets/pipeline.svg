@@ -70,3 +70,12 @@
     <rect x="206" y="212" width="150" height="46" rx="6" fill="#12352a" stroke="#2f7d5b" stroke-width="2"/>
     <text x="281" y="234" fill="#bfe6d3">signed Merkle proof</text>
     <text x="281" y="250" fill="#7fbfa1" font-size="11">Ed25519 inclusion</text>
+
+    <rect x="388" y="212" width="104" height="46" rx="6" fill="#182937" stroke="#3c5468"/>
+    <text x="440" y="234" fill="#e6eef4" font-size="12">offline replay</text>
+    <text x="440" y="250" fill="#8ba6bc" font-size="10">no provider call</text>
+  </g>
+
+  <!-- artifact to runtime -->
+  <path d="M626 118 L626 146" stroke="#2f7d5b" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+
