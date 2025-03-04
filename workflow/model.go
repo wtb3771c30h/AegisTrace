@@ -100,3 +100,12 @@ func (a Artifact) ValidateSeal() error {
 	if a.Magic != ArtifactMagic || a.Format != ArtifactVersion {
 		return fmt.Errorf("unsupported artifact %q/%q", a.Magic, a.Format)
 	}
+	digest, err := Digest(a.Workflow)
+	if err != nil {
+		return err
+	}
+	if digest != a.Digest {
+		return fmt.Errorf("artifact digest mismatch: have %s, computed %s", a.Digest, digest)
+	}
+	return nil
+}
