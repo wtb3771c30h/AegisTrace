@@ -14,3 +14,4 @@
 # Environment and editors
 .env
 .env.*
+!.env.example
