@@ -75,3 +75,9 @@ func Save(path string, artifact workflow.Artifact) error {
 }
 
 func Load(path string) (workflow.Artifact, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return workflow.Artifact{}, fmt.Errorf("read artifact: %w", err)
+	}
+	var artifact workflow.Artifact
+	dec := json.NewDecoder(bytes.NewReader(data))
