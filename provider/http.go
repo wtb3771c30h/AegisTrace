@@ -123,3 +123,21 @@ func openAIText(d map[string]any) string {
 	s, _ := m["content"].(string)
 	return s
 }
+func nestedText(d map[string]any, list, field string) string {
+	xs, _ := d[list].([]any)
+	if len(xs) == 0 {
+		return ""
+	}
+	x, _ := xs[0].(map[string]any)
+	s, _ := x[field].(string)
+	return s
+}
+func geminiText(d map[string]any) string {
+	cs, _ := d["candidates"].([]any)
+	if len(cs) == 0 {
+		return ""
+	}
+	c, _ := cs[0].(map[string]any)
+	content, _ := c["content"].(map[string]any)
+	parts, _ := content["parts"].([]any)
+	if len(parts) == 0 {
