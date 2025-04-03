@@ -81,3 +81,9 @@ func Load(path string) (workflow.Artifact, error) {
 	}
 	var artifact workflow.Artifact
 	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&artifact); err != nil {
+		return artifact, fmt.Errorf("decode artifact: %w", err)
+	}
+	if err := artifact.ValidateSeal(); err != nil {
+		return artifact, err
