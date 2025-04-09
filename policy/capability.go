@@ -48,3 +48,10 @@ func Verify(token string, public ed25519.PublicKey, requiredScope string, now ti
 		return claims, fmt.Errorf("malformed capability")
 	}
 	payload, err := base64.RawURLEncoding.DecodeString(parts[0])
+	if err != nil {
+		return claims, fmt.Errorf("decode capability: %w", err)
+	}
+	sig, err := base64.RawURLEncoding.DecodeString(parts[1])
+	if err != nil {
+		return claims, fmt.Errorf("decode signature: %w", err)
+	}
