@@ -12,3 +12,5 @@ Contributions should preserve the small trusted core and explicit format boundar
 6. Update format and security documentation when invariants change.
 
 Use standard-library facilities unless a dependency removes substantial security or interoperability risk. Dependencies must be pinned, maintained, and justified in the pull request.
+
+Public APIs require clear names, stable error behavior, and package documentation. Avoid hidden global state, unchecked type assertions, unbounded reads, and logging secrets. Cryptographic changes require test vectors or independent interoperability tests.
