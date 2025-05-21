@@ -16,3 +16,5 @@ archives:
     format_overrides:
       - goos: windows
         formats: [zip]
+checksum:
+  name_template: checksums.txt
