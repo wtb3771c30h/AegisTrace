@@ -27,3 +27,6 @@
 - [ ] Scheduler and worker daemon
 - [ ] Administrative API
 
+## Future research
+
+- Compact verified workflow bytecode
