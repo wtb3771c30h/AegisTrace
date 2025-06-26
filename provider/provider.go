@@ -52,3 +52,9 @@ func (r *Registry) Get(name string) (Provider, error) {
 		return nil, fmt.Errorf("provider %q is not registered", name)
 	}
 	return p, nil
+}
+func (r *Registry) Names() []string {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	names := make([]string, 0, len(r.providers))
+	for name := range r.providers {
