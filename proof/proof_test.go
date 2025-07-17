@@ -37,3 +37,7 @@ func TestAttestation(t *testing.T) {
 		t.Fatal(err)
 	}
 	if err := proof.Verify(attestation); err != nil {
+		t.Fatal(err)
+	}
+	attestation.EventHash = events[2].Hash
+	if err := proof.Verify(attestation); err == nil {
