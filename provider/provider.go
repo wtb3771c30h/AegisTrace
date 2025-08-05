@@ -58,3 +58,9 @@ func (r *Registry) Names() []string {
 	defer r.mu.RUnlock()
 	names := make([]string, 0, len(r.providers))
 	for name := range r.providers {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	return names
+}
+
