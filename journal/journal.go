@@ -101,3 +101,20 @@ func Verify(events []Event) error {
 	for i, e := range events {
 		if e.Sequence != uint64(i) {
 			return fmt.Errorf("event %d has sequence %d", i, e.Sequence)
+		}
+		if e.Previous != previous {
+			return fmt.Errorf("event %d previous hash mismatch", i)
+		}
+		have := e.Hash
+		e.Hash = ""
+		want, err := hashEvent(e)
+		if err != nil {
+			return err
+		}
+		if have != want {
+			return fmt.Errorf("event %d hash mismatch", i)
+		}
+		previous = have
+	}
+	return nil
+}
