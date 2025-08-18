@@ -62,3 +62,10 @@ func Verify(token string, public ed25519.PublicKey, requiredScope string, now ti
 		return claims, fmt.Errorf("decode claims: %w", err)
 	}
 	if now.Before(claims.IssuedAt.Add(-time.Minute)) {
+		return claims, fmt.Errorf("capability is not active")
+	}
+	if !now.Before(claims.ExpiresAt) {
+		return claims, fmt.Errorf("capability expired")
+	}
+	if requiredScope != "" && !allows(claims.Scopes, requiredScope) {
+		return claims, fmt.Errorf("scope %q is not granted", requiredScope)
