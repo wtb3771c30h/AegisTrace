@@ -21,3 +21,8 @@ A journal is UTF-8 JSONL. Event sequence starts at zero. Each event contains seq
 The hash is lowercase hexadecimal SHA-256 over the JSON encoding of all event fields except `hash`. The first event has an empty previous hash. Every later event must name the preceding event hash.
 
 ## Merkle proof
+
+Leaves are the 32-byte journal event hashes. Internal nodes are SHA-256 of byte `0x01`, the left child, and the right child. An odd final node is duplicated. The root is signed over UTF-8 bytes `aegistrace-proof-v1\n<hex-root>` using Ed25519.
+
+## Capability
+
