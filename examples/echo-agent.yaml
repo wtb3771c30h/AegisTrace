@@ -20,3 +20,5 @@ steps:
   - id: preserve
     kind: checkpoint
   - id: create
+    kind: tool
+    provider: echo
