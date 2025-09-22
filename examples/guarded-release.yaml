@@ -21,3 +21,5 @@ steps:
   - id: deploy
     kind: tool
     provider: echo
+    action: deployment.release
+    input:
