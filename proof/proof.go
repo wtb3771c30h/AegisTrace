@@ -135,3 +135,15 @@ func eventLeaves(events []journal.Event) ([][]byte, error) {
 		out[i] = raw
 	}
 	return out, nil
+}
+
+func merklePath(leaves [][]byte, index int) ([]Sibling, []byte) {
+	level := leaves
+	position := index
+	var path []Sibling
+	for len(level) > 1 {
+		if len(level)%2 == 1 {
+			level = append(level, level[len(level)-1])
+		}
+		sibling := position ^ 1
+		path = append(path, Sibling{hex.EncodeToString(level[sibling]), sibling < position})
