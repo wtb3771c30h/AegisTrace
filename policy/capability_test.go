@@ -28,3 +28,5 @@ func TestCapabilityScopeAndExpiry(t *testing.T) {
 	}
 	if _, err := policy.Verify(token, public, "github:write", now); err == nil {
 		t.Fatal("ungranted scope accepted")
+	}
+	if _, err := policy.Verify(token, public, "ticket:create", now.Add(time.Minute)); err == nil {
