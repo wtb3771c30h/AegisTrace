@@ -56,3 +56,9 @@ func TestCompileNormalizesAndSeals(t *testing.T) {
 		t.Fatal(err)
 	}
 	if loaded.Digest != artifact.Digest {
+		t.Fatal("digest changed after load")
+	}
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
