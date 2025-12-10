@@ -30,3 +30,6 @@
 ## Future research
 
 - Compact verified workflow bytecode
+- Hardware-backed attestation keys
+- Hybrid post-quantum proof profiles using standardized libraries
+- Transparency-log publication and witness cosigning
