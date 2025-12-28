@@ -22,3 +22,5 @@ steps:
   - id: create
     kind: tool
     provider: echo
+    action: ticket.create
+    input:
