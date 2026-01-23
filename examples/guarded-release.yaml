@@ -23,3 +23,6 @@ steps:
     provider: echo
     action: deployment.release
     input:
+      release: ${steps.prepare}
+  - id: checkpoint
+    kind: checkpoint
