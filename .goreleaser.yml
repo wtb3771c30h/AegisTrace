@@ -18,3 +18,5 @@ archives:
         formats: [zip]
 checksum:
   name_template: checksums.txt
+changelog:
+  sort: asc
