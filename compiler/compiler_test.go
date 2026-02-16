@@ -67,3 +67,8 @@ func TestCompileNormalizesAndSeals(t *testing.T) {
 	if err := os.WriteFile(path, data, 0o600); err != nil {
 		t.Fatal(err)
 	}
+	if _, err := compiler.Load(path); err == nil || !strings.Contains(err.Error(), "digest mismatch") {
+		t.Fatalf("expected digest failure, got %v", err)
+	}
+}
+
