@@ -30,3 +30,7 @@ AegisTrace considers malicious workflow authors, compromised or misleading model
 - Availability of external services
 - Deterministic live output from external providers
 - Host integrity when the operating system is compromised
+
+## Primary controls
+
+Artifacts are verified both at compilation and load. Tool permissions are exact by default. Runtime effects cross a narrow provider interface. Provider credentials come from environment configuration rather than artifacts. Journals use owner-only creation permissions where supported. Proof and capability signatures use protocol-specific domain separation.
