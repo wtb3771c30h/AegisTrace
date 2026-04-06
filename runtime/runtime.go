@@ -214,3 +214,27 @@ func resolveMap(values map[string]any, input, outputs map[string]any) (map[strin
 func resolve(value any, input, outputs map[string]any) (any, error) {
 	switch v := value.(type) {
 	case string:
+		if !strings.HasPrefix(v, "${") || !strings.HasSuffix(v, "}") {
+			return v, nil
+		}
+		path := strings.TrimSuffix(strings.TrimPrefix(v, "${"), "}")
+		if strings.HasPrefix(path, "input.") {
+			value, ok := lookup(input, strings.TrimPrefix(path, "input."))
+			if !ok {
+				return nil, fmt.Errorf("unknown input %q", path)
+			}
+			return value, nil
+		}
+		if strings.HasPrefix(path, "steps.") {
+			value, ok := outputs[strings.TrimPrefix(path, "steps.")]
+			if !ok {
+				return nil, fmt.Errorf("unknown step output %q", path)
+			}
+			return value, nil
+		}
+		return nil, fmt.Errorf("unsupported expression %q", path)
+	case map[string]any:
+		return resolveMap(v, input, outputs)
+	case []any:
+		out := make([]any, len(v))
+		for i := range v {
