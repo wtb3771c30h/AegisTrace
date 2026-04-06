@@ -24,3 +24,5 @@ steps:
     provider: echo
     action: ticket.create
     input:
+      classification: ${steps.classify}
+  - id: result
