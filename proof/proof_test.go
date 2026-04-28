@@ -41,3 +41,7 @@ func TestAttestation(t *testing.T) {
 	}
 	attestation.EventHash = events[2].Hash
 	if err := proof.Verify(attestation); err == nil {
+		t.Fatal("tampered proof verified")
+	}
+}
+
