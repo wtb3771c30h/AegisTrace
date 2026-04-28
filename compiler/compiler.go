@@ -87,3 +87,9 @@ func Load(path string) (workflow.Artifact, error) {
 	}
 	if err := artifact.ValidateSeal(); err != nil {
 		return artifact, err
+	}
+	if err := verifier.Verify(artifact.Workflow).Error(); err != nil {
+		return artifact, err
+	}
+	return artifact, nil
+}
