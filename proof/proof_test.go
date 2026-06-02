@@ -45,3 +45,8 @@ func TestAttestation(t *testing.T) {
 	}
 }
 
+func TestKeyFileRoundTrip(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "key.json")
+	pub, err := proof.GenerateKey(path)
+	if err != nil {
+		t.Fatal(err)
