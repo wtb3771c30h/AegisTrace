@@ -238,3 +238,28 @@ func resolve(value any, input, outputs map[string]any) (any, error) {
 	case []any:
 		out := make([]any, len(v))
 		for i := range v {
+			item, err := resolve(v[i], input, outputs)
+			if err != nil {
+				return nil, err
+			}
+			out[i] = item
+		}
+		return out, nil
+	default:
+		return value, nil
+	}
+}
+func lookup(values map[string]any, path string) (any, bool) {
+	var current any = values
+	for _, part := range strings.Split(path, ".") {
+		object, ok := current.(map[string]any)
+		if !ok {
+			return nil, false
+		}
+		current, ok = object[part]
+		if !ok {
+			return nil, false
+		}
+	}
+	return current, true
+}
