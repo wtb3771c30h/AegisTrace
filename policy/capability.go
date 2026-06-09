@@ -76,3 +76,11 @@ func Verify(token string, public ed25519.PublicKey, requiredScope string, now ti
 func allows(scopes []string, required string) bool {
 	for _, scope := range scopes {
 		if scope == "*" || scope == required {
+			return true
+		}
+		if strings.HasSuffix(scope, ":*") && strings.HasPrefix(required, strings.TrimSuffix(scope, "*")) {
+			return true
+		}
+	}
+	return false
+}
