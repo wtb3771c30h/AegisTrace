@@ -141,3 +141,21 @@ func geminiText(d map[string]any) string {
 	content, _ := c["content"].(map[string]any)
 	parts, _ := content["parts"].([]any)
 	if len(parts) == 0 {
+		return ""
+	}
+	p, _ := parts[0].(map[string]any)
+	s, _ := p["text"].(string)
+	return s
+}
+func usage(d map[string]any) int {
+	for _, key := range []string{"usage", "usageMetadata"} {
+		if u, ok := d[key].(map[string]any); ok {
+			for _, k := range []string{"total_tokens", "totalTokenCount", "output_tokens"} {
+				if n, ok := u[k].(float64); ok {
+					return int(n)
+				}
+			}
+		}
+	}
+	return 0
+}
