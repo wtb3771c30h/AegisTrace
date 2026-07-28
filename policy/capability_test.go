@@ -30,3 +30,6 @@ func TestCapabilityScopeAndExpiry(t *testing.T) {
 		t.Fatal("ungranted scope accepted")
 	}
 	if _, err := policy.Verify(token, public, "ticket:create", now.Add(time.Minute)); err == nil {
+		t.Fatal("expired token accepted")
+	}
+}
