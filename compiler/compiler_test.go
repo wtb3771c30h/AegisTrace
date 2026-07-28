@@ -72,3 +72,9 @@ func TestCompileNormalizesAndSeals(t *testing.T) {
 	}
 }
 
+func TestCompileRejectsUnknownField(t *testing.T) {
+	_, _, err := compiler.Compile([]byte("name: x\nunknown: true\n"), time.Now())
+	if err == nil || !strings.Contains(err.Error(), "field unknown") {
+		t.Fatalf("expected strict parse error, got %v", err)
+	}
+}
