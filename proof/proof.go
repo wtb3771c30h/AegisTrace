@@ -147,3 +147,16 @@ func merklePath(leaves [][]byte, index int) ([]Sibling, []byte) {
 		}
 		sibling := position ^ 1
 		path = append(path, Sibling{hex.EncodeToString(level[sibling]), sibling < position})
+		next := make([][]byte, 0, len(level)/2)
+		for i := 0; i < len(level); i += 2 {
+			next = append(next, nodeHash(level[i], level[i+1]))
+		}
+		level, position = next, position/2
+	}
+	return path, level[0]
+}
+
+func nodeHash(left, right []byte) []byte {
+	sum := sha256.Sum256(append(append([]byte{1}, left...), right...))
+	return sum[:]
+}
