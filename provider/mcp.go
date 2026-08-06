@@ -66,3 +66,9 @@ func (m *MCP) Execute(ctx context.Context, request Request) (Response, error) {
 	var decoded rpcResponse
 	if err := json.Unmarshal(raw, &decoded); err != nil {
 		return Response{}, fmt.Errorf("decode MCP response: %w", err)
+	}
+	if decoded.Error != nil {
+		return Response{}, fmt.Errorf("MCP error %d: %s", decoded.Error.Code, decoded.Error.Message)
+	}
+	return Response{Output: decoded.Result, Metadata: map[string]string{"provider": "mcp", "tool": request.Action}}, nil
+}
