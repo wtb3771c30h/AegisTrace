@@ -50,3 +50,7 @@ func TestKeyFileRoundTrip(t *testing.T) {
 	pub, err := proof.GenerateKey(path)
 	if err != nil {
 		t.Fatal(err)
+	}
+	private, err := proof.LoadPrivate(path)
+	if err != nil {
+		t.Fatal(err)
