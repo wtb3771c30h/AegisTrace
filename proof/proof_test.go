@@ -54,3 +54,8 @@ func TestKeyFileRoundTrip(t *testing.T) {
 	private, err := proof.LoadPrivate(path)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !private.Public().(ed25519.PublicKey).Equal(pub) {
+		t.Fatal("public key mismatch")
+	}
+}
