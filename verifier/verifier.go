@@ -130,3 +130,14 @@ func verifyGraph(entry string, steps map[string]workflow.Step, r *Report) {
 			visit(s.Next)
 		}
 		if s.OnError != "" {
+			visit(s.OnError)
+		}
+		state[id] = 2
+	}
+	visit(entry)
+	for id := range steps {
+		if !reachable[id] {
+			r.Issues = append(r.Issues, Issue{"steps." + id, "is unreachable"})
+		}
+	}
+}
