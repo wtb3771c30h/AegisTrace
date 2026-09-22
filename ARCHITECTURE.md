@@ -41,3 +41,6 @@ Artifact sealing, journal chaining, Merkle trees, proof signatures, and capabili
 
 Compilation and load fail closed. Provider failures follow an admitted `on_error` edge when present; otherwise the run records a terminal failure. Journal writes are synced before execution proceeds. Checkpoints are written to a temporary file and atomically renamed.
 
+## Extension points
+
+Providers implement one context-aware method. Checkpoint storage and approval decisions are interfaces. These boundaries support future database, queue, policy-engine, and telemetry integrations without changing workflow or proof formats.
