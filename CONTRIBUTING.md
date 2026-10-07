@@ -1,18 +1,12 @@
 # Contributing
 
-Contributions should preserve the small trusted core and explicit format boundaries.
+Thanks for looking. A few things that make a change easy to take:
 
-## Workflow
-
-1. Open an issue for format or security-boundary changes.
-2. Create a focused branch.
-3. Add tests for behavior and failure paths.
-4. Run `go fmt ./...`, `go vet ./...`, and `go test -race ./...`.
-5. Keep every source file below 500 lines.
-6. Update format and security documentation when invariants change.
-
-Use standard-library facilities unless a dependency removes substantial security or interoperability risk. Dependencies must be pinned, maintained, and justified in the pull request.
-
-Public APIs require clear names, stable error behavior, and package documentation. Avoid hidden global state, unchecked type assertions, unbounded reads, and logging secrets. Cryptographic changes require test vectors or independent interoperability tests.
-
-Commits should be reviewable and describe why a change is needed. Generated files must identify their generator and should not be edited manually.
+1. Open an issue first for anything larger than a bug fix, so we agree on the shape.
+2. Keep the change focused - one behaviour per pull request.
+3. Run the checks before opening the PR:
+- `go vet ./...`
+- `go test ./...`
+- `go build -o bin/aegis ./cmd/aegis`
+4. Add a test for the behaviour you changed.
+5. Match the surrounding style; the codebase is deliberately small and flat.
