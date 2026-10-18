@@ -19,3 +19,10 @@ Replay performs no provider call. It parses all journal events, verifies sequenc
 ## Stability
 
 Persisted format identifiers are stable within major format versions. Provider response parsing may expand compatibly. A future distributed protocol will be versioned independently and will not redefine artifact or proof semantics.
+
+## Replay
+
+Persisted records are consumed by the replayer under the invariants listed in
+[SPECIFICATION.md](SPECIFICATION.md#replay-invariants): pinned time, no network, digest-first
+verification, and hard failure on unknown steps. Adapters that persist additional fields should
+keep them outside the verified digest unless a protocol version bump says otherwise.
