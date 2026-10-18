@@ -265,3 +265,9 @@ Every source file must remain below 500 lines. Contributions should add focused 
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE).
+
+## Replay guarantees
+
+Replay pins time from the trace, performs no network access, verifies the artifact digest before
+any effect, and fails on unknown steps. The full list with the ordering between them lives in
+[SPECIFICATION.md](SPECIFICATION.md#replay-invariants).

@@ -31,3 +31,18 @@ A capability has base64url JSON claims and an Ed25519 signature separated by a p
 ## Checkpoint
 
 A checkpoint contains the artifact digest, next step, accumulated outputs, counters, run ID, save time, and format version. Checkpoints are confidential runtime state, not cryptographic proofs.
+
+## Replay invariants
+
+A replay that verifies upholds the following, in order:
+
+1. **Time is pinned**: clock reads observed during replay come from the trace header, never from the
+   wall clock, so a replay is reproducible on a different day.
+2. **The network is off**: replay performs no fetches; a step that requires one is reported as
+   unverifiable rather than silently skipped.
+3. **The digest is checked first**: the artifact digest is verified before any event is replayed,
+   so an edited transcript fails before effects run.
+4. **Unknown steps fail**: a step identifier the replayer does not know is an error, not a no-op.
+
+Every event proof covers the event digest plus its position in the chain; proofs are only meaningful
+against a transcript whose digest has been verified.
