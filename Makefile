@@ -28,6 +28,10 @@ smoke: build
 	./$(BINARY) compile examples/echo-agent.yaml -o smoke.aegis
 	./$(BINARY) verify smoke.aegis
 
+cover: ## Run the tests with coverage and print the per-function summary
+	go test -race -coverprofile=coverage.out ./...
+	go tool cover -func=coverage.out | tail -n 1
+
 clean:
 	rm -f $(BINARY) $(BINARY).exe smoke.aegis run.atlog proof.json
 	rm -rf .aegis dist
