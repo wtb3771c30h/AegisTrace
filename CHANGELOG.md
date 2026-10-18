@@ -4,6 +4,10 @@ All notable changes follow Keep a Changelog. Versions use semantic versioning.
 
 ## [Unreleased]
 
+### Docs
+
+- Replay invariants written down in SPECIFICATION.md, with PROTOCOL.md and README.md in point.
+
 ### Planned
 
 - Resume execution from validated checkpoints

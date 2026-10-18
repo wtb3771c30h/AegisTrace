@@ -33,3 +33,5 @@
 - Hardware-backed attestation keys
 - Hybrid post-quantum proof profiles using standardized libraries
 - Transparency-log publication and witness cosigning
+
+- [x] Replay invariants documented (SPECIFICATION.md).
