@@ -8,5 +8,6 @@ Thanks for looking. A few things that make a change easy to take:
 - `go vet ./...`
 - `go test ./...`
 - `go build -o bin/aegis ./cmd/aegis`
+- `make cover` prints a one-line coverage summary when you want to see the number
 4. Add a test for the behaviour you changed.
 5. Match the surrounding style; the codebase is deliberately small and flat.
