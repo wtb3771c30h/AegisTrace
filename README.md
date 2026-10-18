@@ -271,3 +271,5 @@ Apache License 2.0. See [LICENSE](LICENSE).
 Replay pins time from the trace, performs no network access, verifies the artifact digest before
 any effect, and fails on unknown steps. The full list with the ordering between them lives in
 [SPECIFICATION.md](SPECIFICATION.md#replay-invariants).
+
+License: Apache-2.0 (full text in [LICENSE](LICENSE), copyright in [NOTICE](NOTICE)).

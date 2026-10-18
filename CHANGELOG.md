@@ -6,6 +6,10 @@ All notable changes follow Keep a Changelog. Versions use semantic versioning.
 
 ### Docs
 
+- LICENSE is the canonical Apache-2.0 text; copyright moved to NOTICE.
+
+### Docs
+
 - Replay invariants written down in SPECIFICATION.md, with PROTOCOL.md and README.md in point.
 
 ### Planned
